@@ -4,9 +4,10 @@ image:gpu-status.png[Screenshot]
 
 Usage:
 
-    1. chmod +x <this file name>
-    2. KSysGuard -> File -> New Tab
-    3. KSysGuard -> File -> Monitor Remote Machine
-    4. Fill "Host" with a custom string
-    5. Choose "Connection Type" to be "Custom command"
-    6. Fill the "Command" with this file name
+- Install `nvidia-smi`
+- chmod +x path/to/nvidia-gpu-status-for-ksysguard.py
+- KSysGuard -> File -> New Tab
+- KSysGuard -> File -> Monitor Remote Machine
+- Fill "Host" with a custom string
+- Choose "Connection Type" to be "Custom command"
+- Fill the "Command" with "path/to/nvidia-gpu-status-for-ksysguard.py"
