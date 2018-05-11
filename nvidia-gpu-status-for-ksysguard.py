@@ -4,11 +4,16 @@
 
 import subprocess
 import xml.etree.ElementTree as ET
+import collections
+
+CmdInfo = collections.namedtuple('CmdInfo', ['current', 'min', 'max'])
+
+zero = lambda _: 0
 
 supported_query = {
-    'Temperature': lambda gpu: gpu.find('./temperature/gpu_temp').text.split(' ')[0],
-    'Utilization': lambda gpu: gpu.find('./utilization/gpu_util').text.split(' ')[0],
-    'Memory_Used': lambda gpu: gpu.find('./fb_memory_usage/used').text.split(' ')[0]}
+    'Temperature(C)': CmdInfo(lambda gpu: gpu.find('./temperature/gpu_temp').text.split(' ')[0], zero, zero),
+    'Utilization(%)': CmdInfo(lambda gpu: gpu.find('./utilization/gpu_util').text.split(' ')[0], zero, zero),
+    'Memory_Used(MiB)': CmdInfo(lambda gpu: gpu.find('./fb_memory_usage/used').text.split(' ')[0], zero, lambda gpu: gpu.find('./fb_memory_usage/total').text.split(' ')[0])}
 
 def make_cmd(gpu_id, key):
     return f'{gpu_id}_{key}'
@@ -30,9 +35,10 @@ if __name__ == '__main__':
                     print(f'{make_cmd(gpu_id, key)}\tfloat')
         else:
             gpu_id, key = break_cmd(cmd)
+            gpu = info.find(f'.//gpu/[@id="{gpu_id}"]')
             if key.endswith('?'):
-                print(f'{make_cmd(gpu_id, key[:-1])}\t0\t0')
+                cmd_info = supported_query[key[:-1]]
+                print(f'{make_cmd(gpu_id, key[:-1])}\t{cmd_info.min(gpu)}\t{cmd_info.max(gpu)}')
             else:
-                gpu = info.find(f'.//gpu/[@id="{gpu_id}"]')
-                result = supported_query[key](gpu)
+                result = supported_query[key].current(gpu)
                 print(result)
