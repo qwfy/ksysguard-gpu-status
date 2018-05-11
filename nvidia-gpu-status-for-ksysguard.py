@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
 
-'''
-Provide GPU status for KSysGuard
-
-See also: https://techbase.kde.org/Development/Tutorials/Sensors#Protocol
-
-Usage:
-    1. chmod +x <this file name>
-    2. KSysGuard -> File -> New Tab
-    3. KSysGuard -> File -> Monitor Remote Machine
-    4. Choose "Connection Type" to be "Custom command", fill the command with this file name
-'''
+# Ref: https://techbase.kde.org/Development/Tutorials/Sensors#Protocol
 
 import subprocess
 import xml.etree.ElementTree as ET
