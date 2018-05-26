@@ -12,7 +12,7 @@ zero = lambda _: 0
 
 supported_query = {
     'Temperature(C)': CmdInfo(lambda gpu: gpu.find('./temperature/gpu_temp').text.split(' ')[0], zero, zero),
-    'Utilization(%)': CmdInfo(lambda gpu: gpu.find('./utilization/gpu_util').text.split(' ')[0], zero, zero),
+    'Utilization(%)': CmdInfo(lambda gpu: gpu.find('./utilization/gpu_util').text.split(' ')[0], zero, lambda _: 100),
     'Memory_Used(MiB)': CmdInfo(lambda gpu: gpu.find('./fb_memory_usage/used').text.split(' ')[0], zero, lambda gpu: gpu.find('./fb_memory_usage/total').text.split(' ')[0])}
 
 def make_cmd(gpu_id, key):
